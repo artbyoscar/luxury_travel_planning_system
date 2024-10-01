@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/helmet": "^0.0.48",
+    "@types/morgan": "^1.9.9"
+  }
+}
