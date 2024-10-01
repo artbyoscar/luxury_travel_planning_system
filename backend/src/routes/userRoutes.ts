@@ -12,7 +12,7 @@ const preferenceAgent = new PersonalPreferenceAgent();
 const destinationAgent = new DestinationResearchAgent();
 const itineraryAgent = new ItineraryPlanningAgent();
 
-router.use(authMiddleware);
+router.use(authMiddleware as express.RequestHandler);
 
 router.get('/profile', async (req: AuthRequest, res) => {
   const preferences = await getUserPreferences(req.user!.uid);
