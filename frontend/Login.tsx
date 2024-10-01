@@ -27,9 +27,31 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement login logic here
-    onLogin();
-    history.push('/preferences');
+    try {
+      const response = await axios.post('/api/auth/login', { email, password });
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      onLogin();
+      history.push('/preferences');
+    } catch (error) {
+      console.error('Login failed', error);
+      // Display error message to the user
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const errorMessage = error.response.data.message;
+        // Display the error message to the user
+        alert(errorMessage);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received from the server');
+        alert('No response received from the server. Please try again later.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error', error.message);
+        alert('An error occurred. Please try again later.');
+      }
+    }
   };
 
   return (
