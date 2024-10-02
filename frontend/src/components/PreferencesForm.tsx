@@ -1,12 +1,13 @@
-// frontend/src/components/PreferencesForm.tsx
 import React, { useState } from 'react';
 import { db, auth } from '../firebaseConfig';
 import { updateDoc, doc } from 'firebase/firestore';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const PreferencesForm: React.FC = () => {
   const [preferences, setPreferences] = useState<string[]>([]);
-  const history = useHistory();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const preferenceOptions = [
     'beach', 'mountain', 'city', 'countryside', 'island',
@@ -26,33 +27,46 @@ const PreferencesForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (preferences.length === 0) {
+      setError('Please select at least one preference.');
+      return;
+    }
+    setLoading(true);
+    setError(null);
+
     try {
       const user = auth.currentUser;
       if (!user) throw new Error('User not authenticated');
-
+  
       const userRef = doc(db, 'Users', user.uid);
       await updateDoc(userRef, { preferences });
-      history.push('/suggestions');
+      navigate('/suggestions');
     } catch (error) {
-      console.error('Failed to update preferences', error);
-      alert('Failed to update preferences. Please try again.');
+      console.error('Failed to update preferences:', error);
+      setError('Failed to update preferences. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Select Your Travel Preferences</h2>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       {preferenceOptions.map(option => (
         <label key={option}>
           <input
             type="checkbox"
             checked={preferences.includes(option)}
             onChange={() => handlePreferenceChange(option)}
+            aria-label={`Preference for ${option}`}
           />
           {option}
         </label>
       ))}
-      <button type="submit">Submit Preferences</button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Saving..." : "Submit Preferences"}
+      </button>
     </form>
   );
 };
