@@ -1,18 +1,40 @@
 // webpack.config.cypress.js
 
 const path = require('path');
-const { merge } = require('webpack-merge');
-const commonConfig = require('react-scripts/config/webpack.config')('development');
 
-module.exports = merge(commonConfig, {
+module.exports = {
   resolve: {
-    alias: {
-      // Add any custom aliases if needed
-    },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
   module: {
     rules: [
-      // Add any custom loaders if needed
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+          },
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'assets/',
+            },
+          },
+        ],
+      },
     ],
   },
-});
+};

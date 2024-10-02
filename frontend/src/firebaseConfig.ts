@@ -4,17 +4,26 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-// Import other Firebase services as needed, e.g., getStorage
 
-// Firebase configuration from environment variables
+// Helper function to get environment variable
+const getEnvVariable = (key) => {
+  if (typeof process !== 'undefined' && process.env[key]) {
+    return process.env[key];
+  } else if (typeof Cypress !== 'undefined') {
+    return Cypress.env(key);
+  }
+  return undefined;
+};
+
+// Firebase configuration using the helper function
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+  apiKey: getEnvVariable('REACT_APP_FIREBASE_API_KEY'),
+  authDomain: getEnvVariable('REACT_APP_FIREBASE_AUTH_DOMAIN'),
+  projectId: getEnvVariable('REACT_APP_FIREBASE_PROJECT_ID'),
+  storageBucket: getEnvVariable('REACT_APP_FIREBASE_STORAGE_BUCKET'),
+  messagingSenderId: getEnvVariable('REACT_APP_FIREBASE_MESSAGING_SENDER_ID'),
+  appId: getEnvVariable('REACT_APP_FIREBASE_APP_ID'),
+  measurementId: getEnvVariable('REACT_APP_FIREBASE_MEASUREMENT_ID')
 };
 
 // Initialize Firebase
@@ -29,6 +38,5 @@ isSupported().then((supported) => {
 });
 const db = getFirestore(app); // Firestore
 const auth = getAuth(app);     // Authentication
-// Initialize other services if needed, e.g., const storage = getStorage(app);
 
-export { app, analytics, db, auth /*, storage */ };
+export { app, analytics, db, auth };
