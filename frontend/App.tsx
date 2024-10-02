@@ -6,6 +6,7 @@ import Login from './components/Login';
 import PreferencesForm from './components/PreferencesForm';
 import DestinationSuggestions from './components/DestinationSuggestions';
 import Itinerary from './components/Itinerary';
+import Recommendations from './components/Recommendations';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -63,6 +64,7 @@ const App: React.FC = () => {
             <PrivateRoute path="/preferences" component={PreferencesForm} />
             <PrivateRoute path="/suggestions" component={DestinationSuggestions} />
             <PrivateRoute path="/itinerary" component={Itinerary} />
+            <PrivateRoute path="/recommendations" component={Recommendations} /> {/* Added Route */}
             <Redirect from="/" to="/login" />
           </Switch>
         </div>
