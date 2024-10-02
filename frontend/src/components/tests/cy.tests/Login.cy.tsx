@@ -1,9 +1,14 @@
-import React from 'react'
-import Login from '../../Login'
+import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
+import Login from '../../Login';
 
 describe('<Login />', () => {
   it('renders', () => {
-    // see: https://on.cypress.io/mounting-react
-    cy.mount(<Login />)
-  })
-})
+    // Wrap the component with MemoryRouter
+    cy.mount(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>
+    );
+  });
+});
