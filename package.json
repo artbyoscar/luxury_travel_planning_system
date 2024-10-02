@@ -2,6 +2,7 @@
   "dependencies": {
     "@firebasegen/default": "file:generated/javascript/default",
     "dotenv": "^16.4.5",
+    "firebase": "^10.14.0",
     "helmet": "^8.0.0",
     "morgan": "^1.10.0"
   },
