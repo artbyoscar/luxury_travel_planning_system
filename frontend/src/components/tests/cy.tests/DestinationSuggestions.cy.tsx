@@ -1,9 +1,14 @@
-import React from 'react'
-import DestinationSuggestions from '../../DestinationSuggestions'
+import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
+import DestinationSuggestions from '../../DestinationSuggestions';
 
 describe('<DestinationSuggestions />', () => {
   it('renders', () => {
-    // see: https://on.cypress.io/mounting-react
-    cy.mount(<DestinationSuggestions />)
-  })
-})
+    // Wrap the component with MemoryRouter if it uses routing
+    cy.mount(
+      <MemoryRouter>
+        <DestinationSuggestions />
+      </MemoryRouter>
+    );
+  });
+});

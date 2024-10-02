@@ -1,8 +1,7 @@
-// frontend/src/components/DestinationSuggestions.tsx
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebaseConfig';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Destination {
   name: string;
@@ -15,7 +14,7 @@ const DestinationSuggestions: React.FC = () => {
   const [suggestions, setSuggestions] = useState<Destination[]>([]);
   const [selectedDestination, setSelectedDestination] = useState<string>('');
   const [lengthOfStay, setLengthOfStay] = useState<number>(3);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -43,7 +42,7 @@ const DestinationSuggestions: React.FC = () => {
         createdAt: new Date()
       });
       
-      history.push('/itinerary');
+      navigate('/itinerary');
     } catch (error) {
       console.error('Failed to create itinerary', error);
     }
