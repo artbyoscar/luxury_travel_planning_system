@@ -1,21 +1,30 @@
+// src/backend/app.ts
+
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import { register, httpRequestDurationMicroseconds } from './utils/metrics';
 import logger from './utils/logger';
 import apiRoutes from './routes/api';
 import authRoutes from './routes/auth';
 import { errorHandler } from './middleware/errorHandler';
 import { apiLimiter } from './middleware/rateLimiter';
-import dotenv from 'dotenv';
+
 dotenv.config();
 
 const app = express();
 
 // Middleware
 app.use(helmet());
-app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) } }));
+app.use(
+  morgan('combined', {
+    stream: {
+      write: (message: string) => logger.info(message.trim()),
+    },
+  })
+);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

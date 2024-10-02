@@ -1,17 +1,15 @@
-const admin = require('firebase-admin');
-admin.initializeApp();
+// backend/src/functions/destination.js
 
 exports.suggestDestinations = async (req, res) => {
   const { userPreferences } = req.body;
 
   try {
-    const snapshot = await admin.firestore().collection('Destinations').get();
-    const destinations = snapshot.docs
-      .map(doc => doc.data())
-      .filter(dest => userPreferences.some(pref => dest.activities.includes(pref)));
-    
-    res.status(200).json(destinations);
+    // Destinations are now fetched directly from the frontend using Firestore.
+    // This endpoint can be repurposed for server-side filtering or other logic if needed.
+
+    // Placeholder response
+    res.status(200).send('Destination suggestions are now handled on the frontend.');
   } catch (error) {
-    res.status(500).send(`Error fetching destinations: ${error.message}`);
+    res.status(500).send(`Error in destination suggestion process: ${error.message}`);
   }
 };

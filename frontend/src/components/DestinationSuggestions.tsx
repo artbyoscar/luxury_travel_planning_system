@@ -1,5 +1,8 @@
+// frontend/src/components/DestinationSuggestions.tsx
 import React, { useState, useEffect } from 'react';
-import { firestore } from '../firebaseConfig'; // Ensure this path is correct
+import { db, auth } from '../firebaseConfig';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { useHistory } from 'react-router-dom';
 
 interface Destination {
   name: string;
@@ -12,11 +15,12 @@ const DestinationSuggestions: React.FC = () => {
   const [suggestions, setSuggestions] = useState<Destination[]>([]);
   const [selectedDestination, setSelectedDestination] = useState<string>('');
   const [lengthOfStay, setLengthOfStay] = useState<number>(3);
+  const history = useHistory();
 
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const snapshot = await firestore.collection('Destinations').get();
+        const snapshot = await getDocs(collection(db, 'Destinations'));
         const destinations = snapshot.docs.map(doc => doc.data() as Destination);
         setSuggestions(destinations);
       } catch (error) {
@@ -29,16 +33,17 @@ const DestinationSuggestions: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Assuming there's a backend endpoint to handle itinerary creation
-      await fetch('/api/users/create-itinerary', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
-        body: JSON.stringify({
-          destination: selectedDestination,
-          lengthOfStay
-        })
+      const user = auth.currentUser;
+      if (!user) throw new Error('User not authenticated');
+
+      await addDoc(collection(db, 'Itineraries'), {
+        userId: user.uid,
+        destination: selectedDestination,
+        lengthOfStay,
+        createdAt: new Date()
       });
-      window.location.href = '/itinerary';
+      
+      history.push('/itinerary');
     } catch (error) {
       console.error('Failed to create itinerary', error);
     }

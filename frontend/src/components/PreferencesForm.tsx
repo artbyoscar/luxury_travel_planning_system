@@ -1,6 +1,7 @@
-// src/frontend/components/PreferencesForm.tsx
+// frontend/src/components/PreferencesForm.tsx
 import React, { useState } from 'react';
-import axios from 'axios';
+import { db, auth } from '../firebaseConfig';
+import { updateDoc, doc } from 'firebase/firestore';
 import { useHistory } from 'react-router-dom';
 
 const PreferencesForm: React.FC = () => {
@@ -26,12 +27,15 @@ const PreferencesForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/api/users/preferences', { preferences }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
+      const user = auth.currentUser;
+      if (!user) throw new Error('User not authenticated');
+
+      const userRef = doc(db, 'Users', user.uid);
+      await updateDoc(userRef, { preferences });
       history.push('/suggestions');
     } catch (error) {
       console.error('Failed to update preferences', error);
+      alert('Failed to update preferences. Please try again.');
     }
   };
 

@@ -20,7 +20,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "firebase-admin": "^12.6.0",
     "nodemon": "^3.1.7",
     "prom-client": "^14.2.0",
     "winston": "^3.11.0"
@@ -38,6 +37,8 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "setupFiles": ["<rootDir>/tests/setup.ts"]
+    "setupFiles": [
+      "<rootDir>/tests/setup.ts"
+    ]
   }
 }

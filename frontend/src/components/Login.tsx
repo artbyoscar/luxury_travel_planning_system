@@ -1,23 +1,32 @@
+// src/frontend/components/Login.tsx
+
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { auth } from '../firebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Redirect, useLocation } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const [error, setError] = useState<string | null>(null);
+  const location = useLocation<any>();
+  const [redirect, setRedirect] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
-      localStorage.setItem('token', response.data.token);
-      history.push('/dashboard');
-    } catch (error) {
-      console.error('Login failed', error);
-      // Display error message to the user
+      await signInWithEmailAndPassword(auth, email, password);
+      setRedirect(true);
+    } catch (err: any) {
+      setError(err.message);
     }
   };
+
+  if (redirect) {
+    // Redirect to the intended page after login
+    const { from } = location.state || { from: { pathname: '/preferences' } };
+    return <Redirect to={from} />;
+  }
 
   return (
     <div>
@@ -43,6 +52,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Login</button>
       </form>
     </div>
