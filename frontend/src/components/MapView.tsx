@@ -3,7 +3,15 @@
 import React from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
-const MapView: React.FC<{ locations: Array<{ lat: number; lng: number; name: string }> }> = ({ locations }) => {
+interface Location {
+  lat: number;
+  lng: number;
+  name: string;
+}
+
+const MapView: React.FC<{ locations: Location[] }> = ({ locations }) => {
+  if (locations.length === 0) return <div>No locations available</div>;
+
   return (
     <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
       <GoogleMap
