@@ -1,25 +1,30 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+// cypress/support/commands.js
+
+Cypress.Commands.add('mockFirestore', () => {
+    cy.intercept('POST', '**/google.firestore.v1.Firestore/Listen/**', {
+      statusCode: 200,
+      body: {
+        targetChange: {
+          targetIds: [1],
+          documents: [
+            {
+              name: 'projects/project-id/databases/(default)/documents/trips/1',
+              fields: {
+                destination: { stringValue: 'Paris' },
+                startDate: { stringValue: '2024-10-01' },
+                endDate: { stringValue: '2024-10-10' }
+              }
+            },
+            {
+              name: 'projects/project-id/databases/(default)/documents/trips/2',
+              fields: {
+                destination: { stringValue: 'New York' },
+                startDate: { stringValue: '2024-11-15' },
+                endDate: { stringValue: '2024-11-20' }
+              }
+            }
+          ]
+        }
+      }
+    }).as('firestoreRequest');
+  });

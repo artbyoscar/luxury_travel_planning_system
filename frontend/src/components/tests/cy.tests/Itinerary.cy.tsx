@@ -1,9 +1,9 @@
 import React from 'react'
-import Dashboard from './Dashboard'
+import Itinerary from '../../Itinerary'
 
-describe('<Dashboard />', () => {
+describe('<Itinerary />', () => {
   it('renders', () => {
     // see: https://on.cypress.io/mounting-react
-    cy.mount(<Dashboard />)
+    cy.mount(<Itinerary />)
   })
 })

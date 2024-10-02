@@ -10,6 +10,7 @@ module.exports = defineConfig({
       bundler: 'webpack',
       webpackConfig,
     },
+    specPattern: 'src/components/tests/cy.tests/**/*.cy.{js,jsx,ts,tsx}', // Adjusted pattern
   },
   env: {
     REACT_APP_FIREBASE_API_KEY: 'AIzaSyDlgw_1pSa0YbfsNRNDcG6IhS7QZ3NgMqY',

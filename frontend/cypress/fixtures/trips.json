@@ -1,0 +1,12 @@
+[
+    {
+      "id": 1,
+      "destination": "Paris",
+      "date": "2024-10-01"
+    },
+    {
+      "id": 2,
+      "destination": "New York",
+      "date": "2024-11-15"
+    }
+  ]

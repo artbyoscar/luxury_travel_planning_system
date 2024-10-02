@@ -1,4 +1,4 @@
-// src/components/tests/Dashboard.test.tsx
+//frontend/src/components/tests/Dashboard.test.tsx
 
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
