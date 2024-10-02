@@ -1,26 +1,24 @@
-// src/frontend/components/DestinationSuggestions.tsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { firestore } from '../firebaseConfig'; // Ensure this path is correct
 
 interface Destination {
   name: string;
   description: string;
+  bestTimeToVisit: string;
+  activities: string[];
 }
 
 const DestinationSuggestions: React.FC = () => {
   const [suggestions, setSuggestions] = useState<Destination[]>([]);
   const [selectedDestination, setSelectedDestination] = useState<string>('');
   const [lengthOfStay, setLengthOfStay] = useState<number>(3);
-  const history = useHistory();
 
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const response = await axios.get('/api/users/suggest-destinations', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
-        setSuggestions(response.data.suggestions);
+        const snapshot = await firestore.collection('Destinations').get();
+        const destinations = snapshot.docs.map(doc => doc.data() as Destination);
+        setSuggestions(destinations);
       } catch (error) {
         console.error('Failed to fetch suggestions', error);
       }
@@ -31,13 +29,16 @@ const DestinationSuggestions: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/api/users/create-itinerary', {
-        destination: selectedDestination,
-        lengthOfStay
-      }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      // Assuming there's a backend endpoint to handle itinerary creation
+      await fetch('/api/users/create-itinerary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
+        body: JSON.stringify({
+          destination: selectedDestination,
+          lengthOfStay
+        })
       });
-      history.push('/itinerary');
+      window.location.href = '/itinerary';
     } catch (error) {
       console.error('Failed to create itinerary', error);
     }
@@ -50,6 +51,7 @@ const DestinationSuggestions: React.FC = () => {
         <div key={destination.name}>
           <h3>{destination.name}</h3>
           <p>{destination.description}</p>
+          <p><strong>Best Time to Visit:</strong> {destination.bestTimeToVisit}</p>
           <button onClick={() => setSelectedDestination(destination.name)}>
             Select
           </button>

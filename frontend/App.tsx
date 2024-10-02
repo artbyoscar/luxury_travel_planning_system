@@ -64,7 +64,7 @@ const App: React.FC = () => {
             <PrivateRoute path="/preferences" component={PreferencesForm} />
             <PrivateRoute path="/suggestions" component={DestinationSuggestions} />
             <PrivateRoute path="/itinerary" component={Itinerary} />
-            <PrivateRoute path="/recommendations" component={Recommendations} /> {/* Added Route */}
+            <PrivateRoute path="/recommendations" component={Recommendations} />
             <Redirect from="/" to="/login" />
           </Switch>
         </div>
