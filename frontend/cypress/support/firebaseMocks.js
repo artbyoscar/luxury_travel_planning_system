@@ -1,17 +1,15 @@
-// firebaseMocks.js
 const firebaseAuth = {
-    getAuth: () => ({
-      currentUser: {
-        uid: 'testUserId',
-        email: 'test@example.com',
-      },
-    }),
-  };
-  
-  const firebaseFirestore = {
-    doc: () => ({}),
-    updateDoc: cy.stub().as('updateDoc'), // Use a Cypress stub for updateDoc
-  };
-  
-  export { firebaseAuth, firebaseFirestore };
-  
+  getAuth: () => ({
+    currentUser: {
+      uid: 'testUserId',
+      email: 'test@example.com',
+    },
+  }),
+};
+
+const firebaseFirestore = {
+  doc: () => ({}),
+  updateDoc: async () => Promise.resolve(), // This returns a resolved Promise for successful test simulation
+};
+
+export { firebaseAuth, firebaseFirestore };

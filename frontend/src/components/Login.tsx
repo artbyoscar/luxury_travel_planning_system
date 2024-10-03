@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { auth } from '../firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Redirect, useLocation } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom'; // Use Navigate instead of Redirect
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -23,9 +23,9 @@ const Login: React.FC = () => {
   };
 
   if (redirect) {
-    // Redirect to the intended page after login
+    // Use Navigate instead of Redirect
     const { from } = location.state || { from: { pathname: '/preferences' } };
-    return <Redirect to={from} />;
+    return <Navigate to={from} replace={true} />; // Navigate replaces Redirect
   }
 
   return (
