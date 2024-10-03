@@ -1,26 +1,25 @@
 {
-    "compilerOptions": {
-      "target": "es5",
-      "lib": [
-        "dom",
-        "dom.iterable",
-        "esnext"
-      ],
-      "allowJs": true,
-      "skipLibCheck": true,
-      "esModuleInterop": true,
-      "allowSyntheticDefaultImports": true,
-      "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "noFallthroughCasesInSwitch": true,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": true,
-      "jsx": "react-jsx"
-    },
-    "include": [
-      "src"
-    ]
-  }
+  "compilerOptions": {
+    "target": "es5",  // Target ES5 for compatibility, but ES6 is fine if your project supports modern JS.
+    "lib": ["dom", "dom.iterable", "esnext"],  // These libraries are fine for React
+    "allowJs": true,  // This allows JavaScript files in the project
+    "skipLibCheck": true,  // Skips type checking for declaration files (good for large projects)
+    "esModuleInterop": true,  // Ensure ES module interop for imports
+    "allowSyntheticDefaultImports": true,  // Allows default imports from modules that don't have default exports
+    "strict": true,  // Enable all strict type checking options
+    "forceConsistentCasingInFileNames": true,  // Prevent file casing mismatches
+    "noFallthroughCasesInSwitch": true,  // Ensure that every switch statement ends with a return, break, or throw
+    "module": "esnext",  // Use ESNext modules for compatibility with Webpack
+    "moduleResolution": "node",  // Node-style module resolution
+    "resolveJsonModule": true,  // Allows importing JSON files
+    "isolatedModules": true,  // Ensures each file can be transpiled individually (important for Babel)
+    "noEmit": true,  // Prevents emitting compiled code (important for a project that doesn't use TypeScript for build)
+    "jsx": "react-jsx",  // Ensures React JSX is correctly compiled
+    "baseUrl": ".",  // Base directory for resolving paths
+    "paths": {
+      "cypress/*": ["cypress/*"],  // Path alias for Cypress support and tests
+      "src/*": ["src/*"]  // Path alias for your source code
+    }
+  },
+  "include": ["src", "cypress"]  // Include both src and cypress directories
+}
